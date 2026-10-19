@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Someone Special ✨</title>
+  
+  <!-- Font Estetis dari Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Fredoka:wght@400;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <!-- Styling Otomatis Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(-45deg, #0d0614, #2a0845, #641349, #1f052a);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .font-cute { font-family: 'Fredoka', cursive; }
+    .font-cursive { font-family: 'Dancing Script', cursive; }
+
+    /* Kartu Transparan (Glassmorphism) */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Animasi Hati Berdenyut */
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      14% { transform: scale(1.15); }
+      28% { transform: scale(1); }
+      42% { transform: scale(1.15); }
+      70% { transform: scale(1); }
+    }
+    .animate-heartbeat {
+      animation: heartbeat 1.5s infinite ease-in-out;
+    }
+
+    /* Animasi Karakter Melayang */
+    @keyframes floatChar {
+      0%, 100% { transform: translateY(0px) rotate(-3deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+    .animate-char {
+      animation: floatChar 2.5s ease-in-out infinite;
+    }
+
+    /* Bar Gelombang Musik */
+    .bar {
+      width: 3px;
+      height: 12px;
+      background-color: #ff75a0;
+      border-radius: 3px;
+      animation: barPulse 1s ease-in-out infinite alternate;
+    }
+    .bar:nth-child(1) { animation-delay: 0.1s; }
+    .bar:nth-child(2) { animation-delay: 0.3s; }
+    .bar:nth-child(3) { animation-delay: 0.2s; }
+    .bar:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes barPulse {
+      0% { height: 4px; }
+      100% { height: 18px; }
+    }
+
+    #bgCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .page-step {
+      transition: all 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body class="relative flex items-center justify-center min-h-screen text-white select-none">
+
+  <!-- Partikel Latar Belakang (Melayang) -->
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Tombol Musik (Pojok Kanan Atas) -->
+  <div id="musicBtn" class="fixed top-5 right-5 z-50 flex items-center gap-2 bg-black/40 hover:bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 cursor-pointer transition-all duration-300">
+    <span id="musicIcon" class="text-lg">🎵</span>
+    <span id="musicText" class="text-xs font-cute text-pink-200">Putar Musik</span>
+    <div id="visualizer" class="hidden flex items-center gap-1 ml-1">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </div>
+
+  <!-- Lagu Lofi Romantis -->
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- HALAMAN 1: Pesan Interaktif & Ikon Berganti -->
+  <main id="page1" class="page-step relative z-10 w-[90%] max-w-sm glass-card rounded-3xl p-6 text-center shadow-2xl flex flex-col items-center border border-white/20">
+    
+    <div class="relative cursor-pointer group my-2" id="interactiveHeart">
+      <div id="charIcon" class="text-6xl animate-char transition-transform group-hover:scale-110">🧸</div>
+      <div class="absolute -top-2 -right-2 text-3xl animate-heartbeat filter drop-shadow-[0_0_10px_#ff2a6d]">✨</div>
+      <div id="decoIcon" class="absolute -bottom-1 -left-2 text-2xl animate-bounce">🌸</div>
+    </div>
+
+    <h1 class="font-cursive text-4xl text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-200 to-pink-400 mt-2 filter drop-shadow-md">
+      Halo Kamu! ✨
+    </h1>
+
+    <div class="min-h-[70px] flex items-center justify-center my-4 px-2">
+      <p id="typedText" class="font-cute text-base md:text-lg text-pink-100 leading-relaxed drop-shadow">
+        Klik karakter atau tombol di bawah ya! 🌸
+      </p>
+    </div>
+
+    <button id="nextBtn" class="w-full py-3 px-6 rounded-2xl bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:to-indigo-600 font-cute text-sm font-semibold tracking-wide shadow-lg hover:shadow-pink-500/50 transition-all duration-300 transform active:scale-95 mb-3 flex items-center justify-center gap-2">
+      <span id="btnText">Klik Buat Lanjut</span>
+      <span class="text-lg">✨</span>
+    </button>
+
+    <button id="letterBtn" class="w-full py-2.5 px-6 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 font-cute text-xs text-pink-200 tracking-wider transition-all duration-300 flex items-center justify-center gap-2">
+      <span>Buka Pesan Singkat 💌</span>
+    </button>
+  </main>
+
+  <!-- HALAMAN 2: Pertanyaan Ajak Jalan / Ngopi / Boba -->
+  <main id="page2" class="page-step hidden relative z-10 w-[90%] max-w-sm glass-card rounded-3xl p-6 text-center shadow-2xl flex flex-col items-center border border-white/20 transform scale-95 opacity-0">
+    
+    <div class="text-6xl animate-bounce my-2">🧋</div>
+
+    <h1 class="font-cursive text-4xl text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-200 to-pink-400 mt-2">
+      Pertanyaan Iseng ✨
+    </h1>
+
+    <p class="font-cute text-base text-pink-100 my-4 leading-relaxed">
+      Kalo ada waktu luang, mau nggak kapan-kapan kita ngopi / minum boba bareng? 😊
+    </p>
+
+    <div class="flex gap-3 w-full mt-2">
+      <button id="yesBtn" class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-green-400 to-emerald-600 hover:from-green-500 hover:to-emerald-700 font-cute text-sm font-semibold shadow-lg shadow-green-500/30 transition-all duration-300 transform active:scale-95">
+        Boleh Banget! ☕
+      </button>
+
+      <button id="noBtn" class="flex-1 py-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 font-cute text-sm text-pink-200 transition-all duration-300">
+        Nanti Dulu 😜
+      </button>
+    </div>
+  </main>
+
+  <!-- HALAMAN 3: Jawaban Sukses -->
+  <main id="page3" class="page-step hidden relative z-10 w-[90%] max-w-sm glass-card rounded-3xl p-6 text-center shadow-2xl flex flex-col items-center border border-white/20 transform scale-95 opacity-0">
+    
+    <div class="text-7xl animate-pulse my-2">🎉🥳</div>
+
+    <h1 class="font-cursive text-4xl text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-200 to-pink-400 mt-2">
+      Asyik! ✨
+    </h1>
+
+    <p class="font-cute text-base text-pink-100 my-4 leading-relaxed">
+      Deal ya! Nanti kabarin aja kapan kamu selang waktunya 🧋😊✨
+    </p>
+
+    <button id="restartBtn" class="w-full py-2.5 px-6 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 font-cute text-xs text-pink-200 transition-all duration-300">
+      Ulangi Dari Awal 🔄
+    </button>
+  </main>
+
+  <!-- Pop-Up Surat PDKT -->
+  <div id="letterModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500">
+    <div class="glass-card max-w-xs w-full p-6 rounded-3xl text-center relative border border-pink-300/30 transform scale-90 transition-all duration-300" id="modalContent">
+      <button id="closeModal" class="absolute top-3 right-4 text-pink-300 hover:text-white text-xl">✕</button>
+      
+      <div class="text-4xl mb-2">💌</div>
+      <h2 class="font-cursive text-3xl text-pink-300 mb-3">Catatan Kecil</h2>
+      <p class="font-cute text-xs text-pink-100 leading-relaxed mb-4 text-left bg-black/20 p-3 rounded-xl border border-white/5">
+        Seneng banget bisa kenal dan ngobrol bareng kamu baru-baru ini. Jangan lupa jaga kesehatan dan tetap semangat ya jalani harimu! 🌸✨
+      </p>
+      <div class="font-cursive text-xl text-pink-200">~ Dari teman ngobrolmu</div>
+    </div>
+  </div>
+
+  <script>
+    // --- Data Pesan Santai Khusus Orang yang Baru Dekat ---
+    const storyData = [
+      { msg: "Seneng deh belakangan ini bisa makin akrab sama kamu 😊", char: "🧸", deco: "🌸" },
+      { msg: "Ngobrol sama kamu tuh seru dan bikin hariku lebih berwarna ✨", char: "🐱", deco: "✨" },
+      { msg: "Jangan lupa istirahat dan makan yang teratur ya! 🍦😋", char: "🐰", deco: "🍓" },
+      { msg: "Semoga urusan atau kegiatanmu hari ini lancar terus 🌟", char: "🐼", deco: "💫" },
+      { msg: "Oiya, aku ada pertanyaan kecil nih... 🫣", char: "🐥", deco: "🎁" }
+    ];
+
+    let currentMsgIndex = 0;
+    let isTyping = false;
+
+    const typedTextEl = document.getElementById('typedText');
+    const charIconEl = document.getElementById('charIcon');
+    const decoIconEl = document.getElementById('decoIcon');
+    const btnTextEl = document.getElementById('btnText');
+
+    const page1 = document.getElementById('page1');
+    const page2 = document.getElementById('page2');
+    const page3 = document.getElementById('page3');
+
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicText = document.getElementById('musicText');
+    const visualizer = document.getElementById('visualizer');
+    let isMusicPlaying = false;
+
+    function typeWriter(text, i = 0) {
+      if (i === 0) {
+        typedTextEl.textContent = '';
+        isTyping = true;
+      }
+      if (i < text.length) {
+        typedTextEl.textContent += text.charAt(i);
+        setTimeout(() => typeWriter(text, i + 1), 40);
+      } else {
+        isTyping = false;
+      }
+    }
+
+    function toggleMusic() {
+      if (!isMusicPlaying) {
+        bgMusic.play().then(() => {
+          isMusicPlaying = true;
+          musicIcon.textContent = '🔊';
+          musicText.textContent = 'Playing';
+          visualizer.classList.remove('hidden');
+        }).catch(err => console.log(err));
+      } else {
+        bgMusic.pause();
+        isMusicPlaying = false;
+        musicIcon.textContent = '🎵';
+        musicText.textContent = 'Putar Musik';
+        visualizer.classList.add('hidden');
+      }
+    }
+
+    musicBtn.addEventListener('click', toggleMusic);
+
+    function switchPage(fromPage, toPage) {
+      fromPage.classList.add('opacity-0', 'scale-95');
+      setTimeout(() => {
+        fromPage.classList.add('hidden');
+        toPage.classList.remove('hidden');
+        setTimeout(() => {
+          toPage.classList.remove('opacity-0', 'scale-95');
+        }, 50);
+      }, 400);
+    }
+
+    function handleNextAction(e) {
+      if (!isMusicPlaying) toggleMusic();
+      if (isTyping) return;
+
+      createParticleBurst(e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+
+      currentMsgIndex++;
+
+      if (currentMsgIndex < storyData.length) {
+        const data = storyData[currentMsgIndex];
+        
+        charIconEl.textContent = data.char;
+        decoIconEl.textContent = data.deco;
+
+        typeWriter(data.msg);
+
+        if (currentMsgIndex === storyData.length - 1) {
+          btnTextEl.textContent = "Buka Pertanyaan 🎁";
+        }
+      } else {
+        switchPage(page1, page2);
+      }
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', handleNextAction);
+    document.getElementById('interactiveHeart').addEventListener('click', handleNextAction);
+
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+
+    yesBtn.addEventListener('click', (e) => {
+      createParticleBurst(e.clientX, e.clientY);
+      switchPage(page2, page3);
+    });
+
+    let noClickCount = 0;
+    noBtn.addEventListener('mouseover', () => {
+      const x = (Math.random() - 0.5) * 150;
+      const y = (Math.random() - 0.5) * 100;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    noBtn.addEventListener('click', () => {
+      noClickCount++;
+      if (noClickCount >= 3) {
+        alert("Jangan malu-malu gitu dong! 😜☕");
+        switchPage(page2, page3);
+      }
+    });
+
+    document.getElementById('restartBtn').addEventListener('click', () => {
+      currentMsgIndex = 0;
+      charIconEl.textContent = storyData[0].char;
+      decoIconEl.textContent = storyData[0].deco;
+      btnTextEl.textContent = "Klik Buat Lanjut";
+      typeWriter(storyData[0].msg);
+      switchPage(page3, page1);
+    });
+
+    const letterBtn = document.getElementById('letterBtn');
+    const letterModal = document.getElementById('letterModal');
+    const modalContent = document.getElementById('modalContent');
+    const closeModal = document.getElementById('closeModal');
+
+    letterBtn.addEventListener('click', (e) => {
+      if (!isMusicPlaying) toggleMusic();
+      createParticleBurst(e.clientX, e.clientY);
+      letterModal.classList.remove('opacity-0', 'pointer-events-none');
+      modalContent.classList.remove('scale-90');
+      modalContent.classList.add('scale-100');
+    });
+
+    closeModal.addEventListener('click', () => {
+      letterModal.classList.add('opacity-0', 'pointer-events-none');
+      modalContent.classList.remove('scale-100');
+      modalContent.classList.add('scale-90');
+    });
+
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    const particleTypes = ['🌸', '✨', '💖', '🧸', '⭐', '🎈'];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 20;
+        this.size = Math.random() * 14 + 12;
+        this.speedY = Math.random() * 1.5 + 0.8;
+        this.speedX = Math.sin(Math.random() * Math.PI) * 1;
+        this.type = particleTypes[Math.floor(Math.random() * particleTypes.length)];
+        this.opacity = Math.random() * 0.7 + 0.3;
+        this.rotation = Math.random() * 360;
+        this.rotSpeed = (Math.random() - 0.5) * 2;
+      }
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        this.rotation += this.rotSpeed;
+        if (this.y < -30) this.reset();
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.globalAlpha = this.opacity;
+        ctx.font = `${this.size}px serif`;
+        ctx.fillText(this.type, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < 25; i++) {
+      particles.push(new Particle());
+    }
+
+    function createParticleBurst(x, y) {
+      for (let i = 0; i < 10; i++) {
+        const p = new Particle();
+        p.x = x;
+        p.y = y;
+        p.speedY = (Math.random() - 0.5) * 6;
+        p.speedX = (Math.random() - 0.5) * 6;
+        p.size = Math.random() * 20 + 15;
+        particles.push(p);
+        setTimeout(() => {
+          const idx = particles.indexOf(p);
+          if (idx > -1) particles.splice(idx, 1);
+        }, 1500);
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
